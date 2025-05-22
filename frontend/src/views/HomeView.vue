@@ -48,7 +48,7 @@
     <div class="h3">
       <h3>Не сдаваться после пары пропущенных дней<br>
           Видеть чёткий, визуальный прогресс<br>
-          Закрепить полезные привычки</h3>>
+          Закрепить полезные привычки</h3>
     </div>
   </div>
 
@@ -168,7 +168,7 @@
       </div>
 
       <div class="white-boxinput">
-        <textarea placeholder="Введите текст..."></textarea>
+        <textarea v-model="userMessage" placeholder="Введите текст..."></textarea>
       </div>
 
       <div>
@@ -183,10 +183,7 @@
 import logo from '../assets/logo.svg' 
 import logo2 from '../assets/logo2.jpg'
 import tablemain from '../assets/tablemain.svg'
-function sendMessage() {
-  console.log('Сообщение');
-}
-
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -198,7 +195,34 @@ function signIn(){
   router.push('/registration')
 }
 
+const userMessage = ref('');
 
+const sendMessage = async () => {
+  if (!userMessage.value.trim()) {
+    alert('Введите сообщение перед отправкой');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/send-to-telegram', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text: userMessage.value })
+    });
+
+    if (response.ok) {
+      alert('Сообщение отправлено в Telegram');
+      userMessage.value = ''; 
+    } else {
+      alert('Ошибка при отправке');
+    }
+  } catch (error) {
+    console.error('Ошибка при отправке в Telegram:', error);
+    alert('Сервер не отвечает');
+  }
+};
 
 </script>
 
