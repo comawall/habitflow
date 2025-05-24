@@ -189,7 +189,14 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 function auth() {
-  router.push('/auth') 
+  const token = localStorage.getItem('token')
+
+  if(token){
+    router.push('/menu')
+  }
+  else{
+    router.push('/auth') 
+  }
 }
 function signIn(){
   router.push('/registration')

@@ -29,13 +29,15 @@ import tablemain from '../assets/tablemain.svg'
 const login = ref('')
 const password = ref('')
 const router = useRouter()
+const token = localStorage.getItem('token');
 
 function goReg() {
   router.push('/registration')
 }
+
 async function vhod() {
   try {
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch('http://localhost:3000/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -49,7 +51,9 @@ async function vhod() {
     const result = await response.json();
 
     if (response.ok) {
-      router.push('/menu'); 
+      localStorage.setItem('token', result.token);
+      
+      router.push('/menu');
     } else {
       alert(result.error || 'Неверный логин или пароль');
     }
@@ -58,7 +62,6 @@ async function vhod() {
     alert('Ошибка соединения с сервером');
   }
 }
-
 
 
 </script>

@@ -24,9 +24,7 @@
         <button class="btnmenumain">Выполнена</button>
         <button class="btnmenumain">Заморозить</button>
 
-        <button class="btnmenumainexit">Выйти</button>
-
-
+        <button class="btnmenumainexit" @click="logout">Выйти</button>
     </div>
   
     <div class="content-wrapper">
@@ -53,17 +51,22 @@
   import logo2 from '../assets/logo2.jpg'
   import tablemain from '../assets/tablemain.svg'
   import { useRouter } from 'vue-router'
+  import { ref } from 'vue'
   const router = useRouter()
 
   function goStart() {
-    router.push('/')
-  }
+      router.push('/')
+    }
   function checkProgress() {
     console.log("Прогресс");
-  }
+    }
   function goExit() {
-    console.log("Выход");
-  }
+      console.log("Выход");
+    }
+  function logout() {
+      localStorage.removeItem('token');
+      router.push('/');
+    } 
   </script>
   
   <style scoped>
